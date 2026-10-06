@@ -1,36 +1,41 @@
-# [Project name]
+# Smart Parking Automation
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A responsive parking platform for live slot availability, reservations, vehicle sessions, mock payments, and facility administration.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/smart-parking run dev` — run the parking app
+- `pnpm --filter @workspace/api-server run dev` — run the workspace API server (not used for parking data)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- Required secrets: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
+- Parking app: React + Vite + TypeScript
+- Parking auth/data: Supabase Auth, Postgres, RLS, and Realtime only
+- Workspace API/DB scaffold: Express 5 and Drizzle (not used by the parking product)
 - Validation: Zod (`zod/v4`), `drizzle-zod`
 - API codegen: Orval (from OpenAPI spec)
 - Build: esbuild (CJS bundle)
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/smart-parking/src/lib/parking-api.ts` — Supabase client-side data operations
+- `artifacts/smart-parking/supabase/migrations/` — Supabase schema, security policies, RPCs, and sample facility data
+- `artifacts/smart-parking/src/App.tsx` — route setup and authenticated app shell
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- All app persistence and authentication must remain exclusively in Supabase; do not route parking data through the workspace API or Replit PostgreSQL.
+- The browser receives only the Supabase URL and anon/public key; RLS and security-definer RPCs enforce user/admin permissions and atomic booking.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+Drivers find available spaces, manage vehicles, reserve slots, and track parking and payment history. Administrators manage facilities, occupancy, reservations, entry/exit, pricing, sensors, and analytics.
 
 ## User preferences
 

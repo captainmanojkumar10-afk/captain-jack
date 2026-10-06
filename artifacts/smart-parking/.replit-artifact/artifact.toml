@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Smart Parking Automation"
+description = "A responsive smart parking platform for drivers and parking administrators. Find live availability, reserve and manage parking, track entry and exit sessions, simulate payments, and monitor facilities with Supabase authentication, realtime updates, and row-level security."
+version = "1.0.0"
+id = "artifacts/smart-parking"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21091
+
+[services.development]
+run = "pnpm --filter @workspace/smart-parking run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/smart-parking", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/smart-parking/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21091"
+BASE_PATH = "/"
