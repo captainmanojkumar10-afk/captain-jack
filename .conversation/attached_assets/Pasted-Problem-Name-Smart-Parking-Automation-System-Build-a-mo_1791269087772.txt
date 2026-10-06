@@ -1,0 +1,617 @@
+Problem Name: Smart Parking Automation System
+
+Build a modern, responsive, and intelligent Smart Parking Automation System that detects real-time parking availability and automatically manages parking-slot allocation, reservations, vehicle entry/exit, payments, notifications, and parking analytics.
+
+The system must include secure Login and Logout functionality and must use Supabase exclusively for database and authentication services.
+
+1. Authentication Module
+
+Create dedicated authentication pages:
+
+Login Page
+
+Email and password fields.
+
+Show/hide password option.
+
+Form validation.
+
+Login using Supabase Authentication.
+
+Display appropriate error messages for invalid credentials.
+
+Redirect authenticated users to the appropriate dashboard.
+
+Include a link to the registration page.
+
+Include a "Forgot Password" option.
+
+Registration Page
+
+Full name.
+
+Email.
+
+Phone number.
+
+Password.
+
+Confirm password.
+
+Accept terms and conditions.
+
+Create the user using Supabase Authentication.
+
+Store additional user information in a Supabase profiles table.
+
+Logout
+
+Provide a logout button in the user/admin dashboard.
+
+Sign out using Supabase Authentication.
+
+Clear the active session.
+
+Redirect the user to the Login page.
+
+Prevent authenticated pages from being accessed after logout.
+
+Authentication Security
+
+Use Supabase Auth.
+
+Use session-based authentication.
+
+Protect private routes.
+
+Never store passwords manually in the database.
+
+Use Supabase Row Level Security (RLS).
+
+Users should only be able to access their own personal data.
+
+Admin users should have appropriate administrative permissions.
+
+2. User Dashboard
+
+After successful login, users should see a modern dashboard containing:
+
+Total available parking slots.
+
+Currently reserved slots.
+
+Active parking session.
+
+Upcoming reservations.
+
+Recent parking history.
+
+Quick "Find Parking" action.
+
+Quick "Reserve Slot" action.
+
+Notifications.
+
+User profile.
+
+3. Smart Parking Detection
+
+The system should detect the real-time state of parking slots.
+
+Each slot can have one of these states:
+
+AVAILABLE
+
+RESERVED
+
+OCCUPIED
+
+MAINTENANCE
+
+OFFLINE
+
+Support future integration with:
+
+IoT sensors
+
+Cameras
+
+Computer vision
+
+RFID
+
+License plate recognition
+
+For the initial version, provide a simulated/manual sensor interface so the system can demonstrate real-time slot changes.
+
+4. Automatic Slot Allocation
+
+When a user requests parking:
+
+Check available slots.
+
+Filter slots according to vehicle requirements.
+
+Select the most suitable slot.
+
+Temporarily lock the selected slot.
+
+Create the reservation.
+
+Update the slot status.
+
+Generate a unique reservation ID/QR code.
+
+Notify the user.
+
+The system must prevent two users from receiving the same parking slot.
+
+Use Supabase/PostgreSQL transactions and appropriate database constraints to maintain consistency.
+
+5. Parking Reservation
+
+Users should be able to:
+
+Select a parking facility.
+
+Select date and time.
+
+View real-time available slots.
+
+Select a preferred slot or allow automatic allocation.
+
+Confirm the reservation.
+
+Receive a booking ID.
+
+View reservation details.
+
+Cancel a reservation when permitted.
+
+Reservations should automatically expire when their validity period ends.
+
+6. Vehicle Management
+
+Users should be able to add and manage their vehicles.
+
+Vehicle information:
+
+Vehicle ID
+
+Vehicle registration/license plate
+
+Vehicle type
+
+Vehicle model
+
+EV status
+
+Accessibility requirements
+
+User ID
+
+A user can have multiple vehicles.
+
+7. Entry Management
+
+When a vehicle arrives:
+
+Verify the reservation.
+
+Verify QR code/booking ID/RFID/license plate.
+
+Record entry timestamp.
+
+Associate the vehicle with the allocated parking slot.
+
+Change slot status to OCCUPIED.
+
+Create an active parking session.
+
+Send an entry confirmation notification.
+
+8. Exit Management
+
+When the vehicle leaves:
+
+Detect/record exit.
+
+Record exit timestamp.
+
+Calculate parking duration.
+
+Calculate parking charges.
+
+Complete the parking session.
+
+Mark the parking slot as AVAILABLE.
+
+Generate a digital receipt.
+
+Send an exit notification.
+
+9. Payment Management
+
+Implement a parking-fee calculation system based on configurable pricing rules.
+
+Example:
+
+First hour       → ₹30
+Each additional hour → ₹20
+Daily maximum    → ₹200
+
+
+The pricing should be configurable by administrators.
+
+Store payment records in Supabase.
+
+For the initial version, implement payment-status tracking and a mock payment flow. Real payment-gateway integration can be added later.
+
+10. Notification System
+
+Users should receive notifications for:
+
+Registration/account confirmation.
+
+Reservation confirmation.
+
+Slot allocation.
+
+Upcoming reservation.
+
+Reservation expiration.
+
+Vehicle entry.
+
+Vehicle exit.
+
+Payment confirmation.
+
+Parking receipt.
+
+Reservation cancellation.
+
+Create a notifications page where users can view their notification history.
+
+11. Admin Dashboard
+
+Create a separate protected admin dashboard.
+
+The admin should be able to view:
+
+Parking Overview
+
+Total parking slots.
+
+Available slots.
+
+Reserved slots.
+
+Occupied slots.
+
+Maintenance slots.
+
+Offline sensors.
+
+Current occupancy percentage.
+
+Parking Management
+
+Add parking facilities.
+
+Add/edit/delete parking slots.
+
+Change slot status.
+
+Configure slot types.
+
+Configure pricing.
+
+Mark slots as maintenance.
+
+Reservation Management
+
+View all reservations.
+
+Approve/cancel reservations.
+
+View active reservations.
+
+View expired reservations.
+
+Vehicle Management
+
+View registered vehicles.
+
+View vehicle parking history.
+
+Entry/Exit Management
+
+View all vehicle entries.
+
+View all vehicle exits.
+
+View currently parked vehicles.
+
+Analytics
+
+Display:
+
+Daily parking count.
+
+Weekly/monthly parking usage.
+
+Occupancy trends.
+
+Revenue.
+
+Most-used parking slots.
+
+Peak parking hours.
+
+12. Supabase Database
+
+Supabase must be the only database used by this project.
+
+Do not use:
+
+MongoDB
+
+Firebase
+
+MySQL
+
+SQLite
+
+PostgreSQL hosted separately
+
+Local database
+
+Use Supabase PostgreSQL for all persistent application data.
+
+Use Supabase Auth for authentication.
+
+Recommended tables:
+
+profiles
+vehicles
+parking_lots
+parking_slots
+reservations
+parking_sessions
+gate_events
+payments
+notifications
+pricing_rules
+sensor_devices
+audit_logs
+
+Example relationships
+auth.users
+     │
+     └── profiles
+            │
+            ├── vehicles
+            │
+            ├── reservations
+            │
+            ├── parking_sessions
+            │
+            ├── payments
+            │
+            └── notifications
+
+parking_lots
+     │
+     └── parking_slots
+            │
+            ├── reservations
+            └── parking_sessions
+
+
+Use foreign keys, indexes, constraints, timestamps, and appropriate status enums.
+
+13. Supabase Row Level Security
+
+Enable RLS on all application tables.
+
+Examples:
+
+Users can read/update their own profile.
+
+Users can access only their own vehicles.
+
+Users can view their own reservations.
+
+Users can view their own parking sessions.
+
+Users can view their own payments.
+
+Users can view their own notifications.
+
+Admins can manage parking facilities, slots, reservations, and reports.
+
+Sensor/device operations must be restricted to authorized services/admins.
+
+Never expose the Supabase service-role key in the frontend.
+
+14. Real-Time Updates
+
+Use Supabase Realtime to update parking availability instantly.
+
+For example:
+
+Parking Slot 12
+AVAILABLE
+     ↓
+Vehicle detected
+     ↓
+OCCUPIED
+     ↓
+Vehicle exits
+     ↓
+AVAILABLE
+
+
+The user dashboard and admin dashboard should update without requiring a page refresh.
+
+15. UI/UX Requirements
+
+Create a clean, modern, professional interface.
+
+Public Pages
+
+Landing page
+
+About
+
+Features
+
+Contact
+
+Login
+
+Registration
+
+Forgot Password
+
+User Pages
+
+Dashboard
+
+Find Parking
+
+Parking Availability
+
+Reservations
+
+Active Parking
+
+Vehicles
+
+Payments
+
+Notifications
+
+Profile
+
+Logout
+
+Admin Pages
+
+Admin Dashboard
+
+Parking Lots
+
+Parking Slots
+
+Reservations
+
+Vehicles
+
+Entry/Exit Records
+
+Payments
+
+Pricing
+
+Sensors
+
+Analytics
+
+Notifications
+
+Settings
+
+Logout
+
+The interface must be fully responsive for:
+
+Desktop
+
+Tablet
+
+Mobile
+
+16. Technology Requirements
+
+Use:
+
+Frontend: React / Next.js
+
+Language: TypeScript
+
+Styling: Tailwind CSS
+
+Authentication: Supabase Auth
+
+Database: Supabase PostgreSQL
+
+Real-Time: Supabase Realtime
+
+Backend/Data Access: Supabase
+
+Database Security: Supabase Row Level Security
+
+Icons: Modern icon library
+
+Charts: Suitable React charting library
+
+Do not introduce another database or authentication provider.
+
+17. Complete System Flow
+User
+ ↓
+Registration / Login
+ ↓
+User Dashboard
+ ↓
+Find Parking
+ ↓
+View Real-Time Availability
+ ↓
+Select Date & Time
+ ↓
+Automatic Slot Allocation
+ ↓
+Reservation Created
+ ↓
+QR / Booking ID Generated
+ ↓
+User Arrives
+ ↓
+Reservation Verification
+ ↓
+Vehicle Entry Recorded
+ ↓
+Slot → OCCUPIED
+ ↓
+Parking Session Active
+ ↓
+Vehicle Exits
+ ↓
+Exit Recorded
+ ↓
+Parking Fee Calculated
+ ↓
+Payment Status Updated
+ ↓
+Parking Session Completed
+ ↓
+Slot → AVAILABLE
+ ↓
+Receipt Generated
+ ↓
+Notification Sent
+ ↓
+Dashboard Updated in Real Time
+
+Final Goal
+
+Build a complete Smart Parking Automation System that replaces manual parking management with an automated, real-time, secure platform.
+
+The final application must provide:
+
+Authentication + Real-Time Detection + Automatic Slot Allocation + Reservations + Vehicle Entry/Exit + Parking Sessions + Payments + Notifications + Admin Dashboard + Analytics
+
+All persistent data and authentication must be handled through Supabase only, with proper database relationships, RLS policies, secure authentication, and real-time updates.
